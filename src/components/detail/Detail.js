@@ -5,7 +5,10 @@ import './Detail.css'
 
 export default function Detail() {
 
-  const pokemon = useSelector(state => state.data.pokemon);
+  const pokemonFromState = useSelector(state => {
+    console.log("Global State", state)
+    return state.data.pokemon;
+  });
 
   const [pokemon, setPokemon] = useState(
     {
@@ -21,33 +24,19 @@ export default function Detail() {
   );
   
   useEffect(() => {
-    fetchData()
-  }, [pokemonId])
+    console.log(pokemonFromState);
+    setPokemon(pokemonFromState)
+  }, [pokemonFromState])
 
-  const fetchData = async () => {
-    const pokemonData = await getPokemonDetail(pokemonId);
-    const pokemonSpecie = await getPokemonSpecies(pokemonId);
-    setPokemon({
-      id: pokemonData.id,
-      name: pokemonData.name,
-      height: pokemonData.height,
-      weight: pokemonData.weight,
-      types: pokemonData.types,
-      frontImg: pokemonData.sprites.front_default,
-      backImg:pokemonData.sprites.back_default,
-      specie: pokemonSpecie.flavor_text_entries,
-    });
-  }
+  const urlImg = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokemon.id ? pokemon.id.toString().padStart(3, '0') : 0}.png`;
 
-  const urlImg = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokemon.id.toString().padStart(3, '0')}.png`;
-
-  const flavor = pokemon.specie.map( ( flavor ) => {
+  const flavor = pokemon.specie ? pokemon.specie.map( ( flavor ) => {
        return flavor.language.name === 'en' ?  flavor.flavor_text : "";
-  })[1];
+  })[1] : null;
 
   return (
     <>
-      {pokemonId > 0 ?
+      {pokemon.id > 0 ?
         <div id="pokedex" class="card" >
           <div class="row no-gutters">
                 <div class="col-md-4">
