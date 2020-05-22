@@ -1,6 +1,7 @@
 const INITIAL_STATE = {
   data: {
     pokemonId: 0,
+    pokemon: {},
   },
 }
   
