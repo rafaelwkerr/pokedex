@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import {useSelector} from 'react-redux'
+import { getPokemonDetail, getPokemonSpecies } from '../../infra/Api'
 import './Detail.css'
 
 export default function Detail() {
 
-  const pokemon = useSelector(state => state.data.pokemon);
+  const pokemonId = useSelector(state => state.data.pokemonId);
 
   const [pokemon, setPokemon] = useState(
     {
@@ -14,11 +15,9 @@ export default function Detail() {
       height: 0,
       weight: 0,
       types: [],
-      frontImg: "",
-      backImg: "",
       specie: [],
     }
-  );
+  )
   
   useEffect(() => {
     fetchData()
@@ -56,7 +55,7 @@ export default function Detail() {
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title">
-                          {pokemon.id} . {pokemon.name}
+                          {pokemon.name}
                         </h5>
                         <ul class="list-inline">
                         {pokemon.types.map((type) => {
@@ -68,19 +67,15 @@ export default function Detail() {
                           );
                         })}
                         </ul>
-                        <p class="card-text">                    
+                        <p class="card-text">
                           {flavor}
                         </p>
                         <p class="card-text">
-                          Height: {Math.round(pokemon.height * 0.1)} m
+                          Height: {pokemon.height}m
                         </p>
                         <p class="card-text">
-                          Weight: {Math.round(pokemon.weight * 0.1)} kg
+                          Weight: {pokemon.weight}kg
                         </p>
-                        <div class="text-right">
-                          <img src={pokemon.frontImg} alt={pokemon.name}/>
-                          <img src={pokemon.backImg} alt={pokemon.name}/>  
-                        </div>
                     </div>
                 </div>
             </div>          
